@@ -165,6 +165,13 @@ format: .bin/goimports .bin/ory node_modules
 docker:
 	DOCKER_BUILDKIT=1 DOCKER_CONTENT_TRUST=1 docker build -f .docker/Dockerfile-build --build-arg=COMMIT=$(VCS_REF) --build-arg=BUILD_DATE=$(BUILD_DATE) -t oryd/kratos:${IMAGE_TAG} .
 
+docker-multiarch-init:
+	docker buildx create --name mybuilder
+
+docker-multiarch:
+	docker buildx use mybuilder
+	DOCKER_BUILDKIT=1 DOCKER_CONTENT_TRUST=1 docker buildx build --builder=mybuilder --platform=linux/arm64,linux/amd64 --push  -f .docker/Dockerfile-build --build-arg=COMMIT=$(VCS_REF) --build-arg=BUILD_DATE=$(BUILD_DATE) -t stas410/kratos:${IMAGE_TAG} .
+
 # Runs the documentation tests
 .PHONY: test-docs
 test-docs: node_modules
