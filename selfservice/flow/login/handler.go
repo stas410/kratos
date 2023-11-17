@@ -103,6 +103,12 @@ func WithFlowReturnTo(returnTo string) FlowOption {
 	}
 }
 
+func WithRequestUrl(requestUrl string) FlowOption {
+	return func(f *Flow) {
+		f.RequestURL = requestUrl
+	}
+}
+
 func WithFormErrorMessage(messages []text.Message) FlowOption {
 	return func(f *Flow) {
 		for i := range messages {

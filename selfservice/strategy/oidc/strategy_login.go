@@ -105,6 +105,8 @@ func (s *Strategy) processLogin(w http.ResponseWriter, r *http.Request, a *login
 				opts = append(opts, registration.WithFlowReturnTo(a.ReturnTo))
 			}
 
+			opts = append(opts, registration.WithRequestUrl(a.RequestURL))
+
 			aa, err := s.d.RegistrationHandler().NewRegistrationFlow(w, r, a.Type, opts...)
 			if err != nil {
 				return nil, s.handleError(w, r, a, provider.Config().ID, nil, err)
