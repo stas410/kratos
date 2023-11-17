@@ -203,6 +203,8 @@ func (s *Strategy) registrationToLogin(w http.ResponseWriter, r *http.Request, r
 		return nil, err
 	}
 
+	lf.Active = s.ID()
+
 	err = s.d.SessionTokenExchangePersister().MoveToNewFlow(r.Context(), rf.ID, lf.ID)
 	if err != nil {
 		return nil, err
